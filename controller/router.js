@@ -12,3 +12,17 @@ exports.showIndex = function(req,res,next){
 		});
 	})
 }
+
+exports.shoAlbum = function(req,res,next){
+	var allblums = req.params.albumName;
+	file.getAllImage(allblums,function(err,imageArray){
+		if(err){
+			next();
+			return;
+		}
+		res.render("album",{
+			"albumname" : allblums,
+			"images" : imageArray
+		});
+	})
+}
