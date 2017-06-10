@@ -3,6 +3,7 @@ var formidable = require('formidable');
 var path = require("path");
 var fs = require("fs");
 var sd = require("silly-datetime");
+var util = require("util");
 //这个函数的callback中含有两个参数，一个是err
 //另一个是存放所有文件夹名字的array。
 exports.getAllAlbums = function(callback){
@@ -13,7 +14,6 @@ exports.getAllAlbums = function(callback){
 		var allAlbums = [];
 		(function iterator(i){
 			if(i == files.length){
-				console.log(allAlbums);
 				callback(null,allAlbums);
 				return;
 			}
@@ -41,7 +41,6 @@ exports.getAllImage =function(albumName,callback){
 	    	console.log("hhhhahahah");
 	        if(i == files.length){
 	            //遍历结束
-	            console.log(allImages);
 	            callback(null,allImages);
 	            return;
 	        }
@@ -58,4 +57,35 @@ exports.getAllImage =function(albumName,callback){
 	    })(0);
 	})
 	
+}
+
+exports.upload = function(req,res){
+	var form = new formidable.IncomingForm();
+	
+	form.encoding = 'utf-8';
+	
+	form.uploadDir =__dirname + "/../uploads";
+	 
+    form.parse(req, function(err, fields, files) {
+    	var ttt = sd.format(new Date(), 'YYYYMMDDHHmmss');
+        var ran = parseInt(Math.random() * 89999 + 10000);
+        var extname = path.extname(files.tupian.name);
+    	var wenjianjia = fields.wenjianjia;
+    	console.log(fields);
+    	console.log(files); 
+    	var oldpath = files.tupian.path;
+    	console.log(oldpath);
+    	var newpath = __dirname + "/../uploads/" + wenjianjia + "/" + ttt + ran + extname;
+    	 
+         fs.rename(oldpath,newpath,function(err){
+        	 if(err){
+        		 res.send("改名失败");
+        		 return;
+        	 }
+        	 res.send("改名成功")
+         });
+    });
+	 
+    return;
+	  
 }

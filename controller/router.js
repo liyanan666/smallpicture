@@ -26,3 +26,22 @@ exports.shoAlbum = function(req,res,next){
 		});
 	})
 }
+
+exports.showup = function(req,res,next){
+	file.getAllAlbums(function(err,allAlabums){
+		if(err){
+			next();
+			return;
+		}
+		res.render("up",{
+			"albums" : allAlabums
+		});
+	})
+}
+
+exports.upload = function(req,res,next){
+	file.upload(req,res);
+}
+
+
+

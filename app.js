@@ -12,5 +12,7 @@ app.use(express.static("./uploads"));
 
 app.get("/",router.showIndex);
 app.get("/:albumName",router.shoAlbum);
+app.get("/up",router.showup);
+app.post("/up",router.upload);
 
 app.listen(3000);
